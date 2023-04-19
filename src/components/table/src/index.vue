@@ -80,7 +80,7 @@
     :style="{ justifyContent }"
   >
     <el-pagination
-      v-model:currentPage="currentPage"
+      v-model:currentPage="currentPage2"
       :page-sizes="pageSizes"
       :page-size="pageSize"
       layout="total, sizes, prev, pager, next, jumper"
@@ -173,7 +173,21 @@ let props = defineProps({
     type: Number,
     default: 0,
   },
+  // loading
+  isLoading: {
+    type: Boolean,
+    default: false,
+  },
 });
+
+const currentPage2 = ref<number>(props.currentPage);
+
+watch(
+  () => props.currentPage,
+  (val: number) => {
+    currentPage2.value = val;
+  }
+);
 
 let emits = defineEmits([
   "confirm",
@@ -214,7 +228,7 @@ let stopWatchData = watch(
     tableData.value.map((item) => {
       item.rowEdit = false;
     });
-    if (watchData.value) stopWatchData();
+    // if (watchData.value) stopWatchData();
   },
   { deep: true }
 );
@@ -239,7 +253,7 @@ let tableOption = computed(() => props.options.filter((item) => !item.action));
 let actionOption = computed(() => props.options.find((item) => item.action));
 
 // 是否在加载中
-let isLoading = computed(() => !props.data || !props.data.length);
+// let isLoading = computed(() => !props.data || !props.data.length);
 
 // 表格分页的排列方式
 let justifyContent = computed(() => {
